@@ -64,12 +64,22 @@ print(population_stats_age_group)
 population_total=census_2016_co_clean["value"].sum()
 print("Total Population Census 2016 ="+str(population_total))
 population_by_county=census_2016_co_clean.groupby("County")["value"].sum()
-print(population_by_county)
+# Create a dataframe of population by county insert and column of the percentage of the total and sort descending.
+population_by_county_df=pd.DataFrame(population_by_county)
+population_by_county_df['%'] = ((population_by_county_df['value'] / population_by_county_df['value'].sum())*100).round(2).astype(str) + '%'
+population_by_county_df=population_by_county_df.sort_values("value",ascending=False)
+print(population_by_county_df)
+# Create a dataframe of population by county, define the index order when creating the dataframe, insert a column of the percentage of the total
 population_by_agegroup=census_2016_co_clean.groupby("Age Group")["value"].sum()
-print(population_by_agegroup)
-
-
-# Population by age group as a scatter plot
+population_by_agegroup_df=pd.DataFrame(population_by_agegroup,index=['0 - 4 years','5 - 9 years','10 - 14 years','15 - 19 years','20 - 24 years','25 - 29 years','30 - 34 years','35 - 39 years','40 - 44 years','45 - 49 years','50 - 54 years','55 - 59 years','60 - 64 years','65 - 69 years','70 - 74 years','75 - 79 years','80 - 84 years','85 years and over'
+])
+population_by_agegroup_df['%'] = ((population_by_agegroup_df['value'] / population_by_agegroup_df['value'].sum())*100).round(2).astype(str) + '%'
+print(population_by_agegroup_df)
 # Population by age group as a histogram
-# Age group by county as a bar chart
-# Age group as a percentage of population bar chart
+population_by_county.plot(x="County", y="Population in Millions", kind="bar", title="Population by County - Cenusus 2016")
+plt.show()
+# plt.title("Population by County Census 2016") plt.xlabel() plt.ylabel()  tick_val[] tick_label[]
+# Population by age group by county as a scatter plot
+# Age group as a percentage of population bar chart Pie chart
+population_by_agegroup.plot(kind="pie", subplots=True, title="Population by Age Group - 2016 Census")
+plt.show()
