@@ -20,7 +20,7 @@ print("Hello")
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-import seaborn as sns
+
 from pyjstat import pyjstat
 
 # Assign URL to variable: url
@@ -47,13 +47,13 @@ print(census_2016_co.head())
 # Save as a csv and check for non applicable rows.
 census_2016_co.to_csv("census2016_co.csv")
 print(census_2016_co.shape)
-# Delete "State" in column "County" (index Column use .drop)
+# Delete "State" in col. "County" (Index Column use .drop,
 census_2016_co=census_2016_co.drop(labels="State", axis=0)
 print(census_2016_co.shape)
-# Exclude "Both sexes" in column "Sex".
+# Delete "Both sexes" in col. "Sex", use.loc
 census_2016_co=census_2016_co.loc[census_2016_co["Sex"]!="Both sexes"]
 print(census_2016_co.shape)
-# Exclude "All ages" column in "Age Group".
+# "All ages" col. in "Age Group". use .loc
 census_2016_co_clean=census_2016_co.loc[census_2016_co["Age Group"]!="All ages"]
 print(census_2016_co_clean.shape)
 # Population Statistics
@@ -76,47 +76,10 @@ population_by_agegroup_df=pd.DataFrame(population_by_agegroup,index=['0 - 4 year
 population_by_agegroup_df['%'] = ((population_by_agegroup_df['value'] / population_by_agegroup_df['value'].sum())*100).round(2).astype(str) + '%'
 print(population_by_agegroup_df)
 # Population by age group as a bar chart
-population_by_county.plot(x="County", y="Population in Millions", kind="bar",title="Population by County - Cenusus 2016")
+population_by_county.plot(x="County", y="Population in Millions", kind="bar", title="Population by County - Cenusus 2016")
 plt.show()
 # Age group as a percentage of population bar chart Pie chart
 population_by_agegroup.plot(kind="pie", subplots=True, title="Population by Age Group - 2016 Census")
 plt.show()
 
-# Remove the index and Pivot the dataset
-census_2016_co_clean=census_2016_co_clean.reset_index()
-census_2016_pivot=census_2016_co_clean.pivot_table(values="value",index="County",columns="Age Group",aggfunc=np.sum,margins=True)
-# Add percentage columns to the datset fir each age group
-census_2016_pivot['0 - 4 years %'] = ((census_2016_pivot['0 - 4 years'] / census_2016_pivot['All'])*100).round(2).astype(str) + '%'
-census_2016_pivot['5 - 9 years %'] = ((census_2016_pivot['5 - 9 years'] / census_2016_pivot['All'])*100).round(2).astype(str) + '%'
-census_2016_pivot['10 - 14 years %'] = ((census_2016_pivot['10 - 14 years'] / census_2016_pivot['All'])*100).round(2).astype(str) + '%'
-census_2016_pivot['15 - 19 years %'] = ((census_2016_pivot['15 - 19 years'] / census_2016_pivot['All'])*100).round(2).astype(str) + '%'
-census_2016_pivot['20 - 24 years %'] = ((census_2016_pivot['20 - 24 years'] / census_2016_pivot['All'])*100).round(2).astype(str) + '%'
-census_2016_pivot['25 - 29 years %'] = ((census_2016_pivot['25 - 29 years'] / census_2016_pivot['All'])*100).round(2).astype(str) + '%'
-census_2016_pivot['30 - 34 years %'] = ((census_2016_pivot['30 - 34 years'] / census_2016_pivot['All'])*100).round(2).astype(str) + '%'
-census_2016_pivot['35 - 39 years %'] = ((census_2016_pivot['35 - 39 years'] / census_2016_pivot['All'])*100).round(2).astype(str) + '%'
-census_2016_pivot['40 - 44 years %'] = ((census_2016_pivot['40 - 44 years'] / census_2016_pivot['All'])*100).round(2).astype(str) + '%'
-census_2016_pivot['45 - 49 years %'] = ((census_2016_pivot['45 - 49 years'] / census_2016_pivot['All'])*100).round(2).astype(str) + '%'
-census_2016_pivot['50 - 54 years %'] = ((census_2016_pivot['50 - 54 years'] / census_2016_pivot['All'])*100).round(2).astype(str) + '%'
-census_2016_pivot['55 - 59 years %'] = ((census_2016_pivot['55 - 59 years'] / census_2016_pivot['All'])*100).round(2).astype(str) + '%'
-census_2016_pivot['60 - 64 years %'] = ((census_2016_pivot['60 - 64 years'] / census_2016_pivot['All'])*100).round(2).astype(str) + '%'
-census_2016_pivot['65 - 69 years %'] = ((census_2016_pivot['65 - 69 years'] / census_2016_pivot['All'])*100).round(2).astype(str) + '%'
-census_2016_pivot['75 - 79 years %'] = ((census_2016_pivot['75 - 79 years'] / census_2016_pivot['All'])*100).round(2).astype(str) + '%'
-census_2016_pivot['80 - 84 years %'] = ((census_2016_pivot['80 - 84 years'] / census_2016_pivot['All'])*100).round(2).astype(str) + '%'
-census_2016_pivot['85 years and over %'] = ((census_2016_pivot['85 years and over'] / census_2016_pivot['All'])*100).round(2).astype(str) + '%'
-print(census_2016_pivot.info)
-# Check for loop for adding a column.
-# Delete columns from the pivit table
-#census_2016_pivot=census_2016_pivot.(drop[], axis=1)
-
-
-
-
-
-
-
-print(census_2016_pivot.info)
-# Show the profile of age by county Horizontal bar chart stacked.
-
-
-# What is the county with the highest % of young people, what is the county with the highest percentage of old people.
-# Extract non car buying age groups.
+# Extract non car buying age groups
