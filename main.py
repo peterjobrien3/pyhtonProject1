@@ -64,7 +64,7 @@ print(population_stats_age_group)
 population_total=census_2016_co_clean["value"].sum()
 print("Total Population Census 2016 ="+str(population_total))
 population_by_county=census_2016_co_clean.groupby("County")["value"].sum()
-# Create a dataframe of population by county insert and column of the percentage of the total and sort descending.
+# Create a dataframe of population by county insert the column of the percentage of the total and sort descending.
 population_by_county_df=pd.DataFrame(population_by_county)
 population_by_county_df['%'] = ((population_by_county_df['value'] / population_by_county_df['value'].sum())*100).round(2).astype(str) + '%'
 population_by_county_df=population_by_county_df.sort_values("value",ascending=False)
@@ -81,11 +81,10 @@ plt.show()
 # Age group as a percentage of population bar chart Pie chart
 population_by_agegroup.plot(kind="pie", subplots=True, title="Population by Age Group - 2016 Census")
 plt.show()
-
 # Remove the index and Pivot the dataset
 census_2016_co_clean=census_2016_co_clean.reset_index()
 census_2016_pivot=census_2016_co_clean.pivot_table(values="value",index="County",columns="Age Group",aggfunc=np.sum,margins=True)
-# Add percentage columns to the datset fir each age group
+# Add percentage columns to the datset for each age group
 census_2016_pivot['0 - 4 years %'] = ((census_2016_pivot['0 - 4 years'] / census_2016_pivot['All'])*100).round(2).astype(str) + '%'
 census_2016_pivot['5 - 9 years %'] = ((census_2016_pivot['5 - 9 years'] / census_2016_pivot['All'])*100).round(2).astype(str) + '%'
 census_2016_pivot['10 - 14 years %'] = ((census_2016_pivot['10 - 14 years'] / census_2016_pivot['All'])*100).round(2).astype(str) + '%'
@@ -103,20 +102,22 @@ census_2016_pivot['65 - 69 years %'] = ((census_2016_pivot['65 - 69 years'] / ce
 census_2016_pivot['75 - 79 years %'] = ((census_2016_pivot['75 - 79 years'] / census_2016_pivot['All'])*100).round(2).astype(str) + '%'
 census_2016_pivot['80 - 84 years %'] = ((census_2016_pivot['80 - 84 years'] / census_2016_pivot['All'])*100).round(2).astype(str) + '%'
 census_2016_pivot['85 years and over %'] = ((census_2016_pivot['85 years and over'] / census_2016_pivot['All'])*100).round(2).astype(str) + '%'
-print(census_2016_pivot.info)
-# Check for loop for adding a column.
-# Delete columns from the pivit table
-#census_2016_pivot=census_2016_pivot.(drop[], axis=1)
-
-
-
-
-
-
-
-print(census_2016_pivot.info)
+census_2016_pivot=census_2016_pivot.reset_index()
+print(census_2016_pivot.info())
+# Delete columns 1-19 from the pivot table
+census_2016_pivot.drop(census_2016_pivot.columns[1:20], axis=1, inplace=True)
+print(census_2016_pivot.info())
+census_2016_pivot.to_csv("census2016_pivot.csv")
+census_2016_pivot_dist=census_2016_pivot.loc[census_2016_pivot["County"]!="All"]
+print(census_2016_pivot_dist)
 # Show the profile of age by county Horizontal bar chart stacked.
+sns.set_theme(style="whitegrid")
+sns.set_color_codes("pastel")
+sns.barplot(x="0 - 4 years %", y="County", data=census_2016_pivot_dist)
+plt.show()
 
+# population_distribution = sns.load_dataset("census_2016_pivot_dist").sort_values("County", ascending=False)
+# Check for loop for adding a column.
 
 # What is the county with the highest % of young people, what is the county with the highest percentage of old people.
 # Extract non car buying age groups.
