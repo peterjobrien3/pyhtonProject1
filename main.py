@@ -116,6 +116,7 @@ sns.set_color_codes("pastel")
 sns.barplot(x="0 - 4 years %", y="County", data=census_2016_pivot_dist)
 plt.show()
 
+
 # population_distribution = sns.load_dataset("census_2016_pivot_dist").sort_values("County", ascending=False)
 # Check for loop for adding a column.
 
